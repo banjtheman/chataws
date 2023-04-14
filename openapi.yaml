@@ -1,0 +1,100 @@
+openapi: 3.0.1
+info:
+  title: AWS Service Plugin
+  description: A plugin that allows users to create websites and Lambda functions using ChatGPT.
+  version: "v1"
+servers:
+  - url: http://localhost:5000
+paths:
+  /uploadToS3:
+    post:
+      operationId: uploadToS3
+      summary: Upload a file to an S3 bucket, any JavaScript code should handle the response body as a JSON object without additional parsing. Also any JavaScript code should use $.ajax() instead of $.post().
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prefix:
+                  type: string
+                file_name:
+                  type: string
+                file_content:
+                  type: string
+                content_type:
+                  type: string
+              required:
+                - prefix
+                - file_name
+                - file_content
+                - content_type
+      responses:
+        "200":
+          description: S3 file uploaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadToS3Response"
+  /createLambdaFunction:
+    post:
+      operationId: createLambdaFunction
+      summary: Create an AWS Lambda function using Python 3.9
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                function_name:
+                  type: string
+                description:
+                  type: string
+                has_dependencies:
+                  type: boolean
+                dependencies:
+                  type: string
+              required:
+                - code
+                - function_name
+                - description
+                - has_dependencies
+                - dependencies
+
+      responses:
+        "200":
+          description: Lambda Function Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateLambdaFunctionResponse"
+
+  /.well-known/ai-plugin.json:
+    get:
+      operationId: serveManifest
+      summary: Serve the ai-plugin.json file
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+components:
+  schemas:
+    UploadToS3Response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message indicating the result of the upload operation.
+    CreateLambdaFunctionResponse:
+      type: object
+      properties:
+        Configuration:
+          type: object
+          description: The details of the created Lambda function.
