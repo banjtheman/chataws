@@ -1,6 +1,6 @@
 # ChatAWS Plugin
 
-The ChatAWS Plugin is an open-source Flask web application that allows users to easily create AWS Lambda functions and upload files to Amazon S3 using ChatGPT.
+The ChatAWS Plugin is an open-source Flask web application that allows users to easily create AWS Lambda functions and create websites in Amazon S3 using ChatGPT.
 
 **Features**
 
