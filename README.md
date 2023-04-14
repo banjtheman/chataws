@@ -52,6 +52,16 @@ aws_chatgpt_plugin
 
 Once up you can follow the instructions [here](https://platform.openai.com/docs/plugins/getting-started/running-a-plugin) to run the plugin within ChatGPT,
 
+
+## Example Prompts
+
+You can test the plugin with some of these prompts:
+
+* Use the ChatAWS Plugin to create a Lambda function that generates a random number between a min and a max number input from a user
+* Use the ChatAWS Plugin to create a website in that invokes the Lambda Function and displays the random number each time a button is pressed, and lets the user change the min and max values
+* Use the ChatAWS Plugin to create a Lambda function that uses the VADER Sentiment Analysis library to perform sentiment analysis on input text
+* Use the ChatAWS Plugin to create a website that invokes the sentiment analysis Lambda Function on an input string from a text box.
+
 ## Contributing
 
 Contributions are welcome! If you have any suggestions, bug reports, or feature requests, please create an issue or submit a pull request.
