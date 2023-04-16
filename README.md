@@ -1,10 +1,15 @@
-# ChatAWS Plugin
+<div align="center"><img src="chat_aws_random_example.png" alt="ChatAWS Plugin creating a Lambda Function"></div>
+<h1 align="center">ChatAWS</h1>
 
-The ChatAWS Plugin is an open-source Flask web application that allows users to easily create AWS Lambda functions and create websites in Amazon S3 using ChatGPT.
 
-![ChatAWS Plugin example of create a Lambda Function that generates random numbers](chat_aws_random_example.png)
+<p align="center">
+   Create AWS Lambda functions and websites in Amazon S3 using ChatGPT.
+</p>
 
-**Features**
+https://user-images.githubusercontent.com/696254/232276725-b497f0a5-1be6-48c4-a156-5ef0bb6d3973.mp4
+
+
+## Features
 
 - Create AWS Python Lambda functions with or without dependencies.
 - Create Static websites using Amazon S3.
