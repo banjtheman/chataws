@@ -1,6 +1,4 @@
-<div align="center"><img src="chat_aws_random_example.png" alt="ChatAWS Plugin creating a Lambda Function"></div>
 <h1 align="center">ChatAWS</h1>
-
 
 <p align="center">
    Create AWS Lambda functions and websites in Amazon S3 using ChatGPT.
@@ -68,6 +66,11 @@ You can test the plugin with some of these prompts:
 * Use the ChatAWS Plugin to create a website in that invokes the Lambda Function and displays the random number each time a button is pressed, and lets the user change the min and max values
 * Use the ChatAWS Plugin to create a Lambda function that uses the VADER Sentiment Analysis library to perform sentiment analysis on input text
 * Use the ChatAWS Plugin to create a website that invokes the sentiment analysis Lambda Function on an input string from a text box.
+
+
+## Example Outputs
+<div align="center"><img src="chat_aws_random_example.png" alt="ChatAWS Plugin creating a Lambda Function"></div>
+
 
 ## Contributing
 
