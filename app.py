@@ -54,7 +54,11 @@ def upload_to_s3():
 
     # Upload file to S3
     try:
-        key_name = f"chataws_resources/{prefix}/{file_name}"
+        # Check if prefix doesnt have trailing /
+        if prefix[-1] != "/":
+            prefix += "/"
+
+        key_name = f"chataws_resources/{prefix}{file_name}"
         s3.put_object(
             Bucket=S3_BUCKET,
             Key=key_name,
