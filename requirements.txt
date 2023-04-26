@@ -4,3 +4,8 @@ boto3
 botocore
 pyyaml
 awscli
+diagrams
+pinecone-client
+openai
+tiktoken
+numpy

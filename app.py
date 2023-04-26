@@ -11,7 +11,7 @@ import os
 import shutil
 import subprocess
 import zipfile
-
+import ai_utils
 
 # Retrieve environment variables
 LAMBDA_ROLE = os.environ["LAMBDA_ROLE"]
@@ -68,7 +68,7 @@ def upload_to_s3():
         )
         logging.info(f"File uploaded to {S3_BUCKET}/{key_name}")
         return (
-            jsonify(message=f"File {key_name} uploaded to S3 bucket {S3_BUCKET}"),
+            jsonify(message=f"File located here https://{S3_BUCKET}.s3.amazonaws.com/{key_name}"),
             200,
         )
     except ClientError as e:
@@ -239,6 +239,134 @@ def create_lambda_function():
 
         return jsonify(response), 200
     except ClientError as e:
+        return jsonify(error=str(e)), e.response["Error"]["Code"]
+
+
+def save_and_run_python_code(code: str, file_name: str = "test.py"):
+    # Save the code to a file
+    with open(file_name, "w") as file:
+        file.write(code)
+
+    # Run the code using a subprocess
+    try:
+        result = subprocess.run(
+            ["python", file_name], capture_output=True, text=True, check=True
+        )
+        print("Output:\n", result.stdout)
+        print("Errors:\n", result.stderr)
+    except subprocess.CalledProcessError as e:
+        print("Error occurred while running the code:")
+        print(e.stdout)
+        print(e.stderr)
+
+
+def process_code(code):
+    # Split the code into lines
+    lines = code.split("\n")
+
+    # Initialize variables to store the updated code and diagram filename
+    updated_lines = []
+    diagram_filename = None
+    inside_diagram_block = False
+
+    for line in lines:
+        # Check if the line contains "with Diagram("
+        if "with Diagram(" in line:
+            # Extract the diagram name between "with Diagram('NAME',"
+            diagram_name = (
+                line.split("with Diagram(")[1].split(",")[0].strip("'").strip('"')
+            )
+
+            # Convert the diagram name to lowercase, replace spaces with underscores, and add ".png" extension
+            diagram_filename = diagram_name.lower().replace(" ", "_") + ".png"
+
+            # Check if the line contains "filename="
+            if "filename=" in line:
+                # Extract the filename from the "filename=" parameter
+                diagram_filename = (
+                    line.split("filename=")[1].split(")")[0].strip("'").strip('"')
+                    + ".png"
+                )
+
+            inside_diagram_block = True
+
+        # Check if the line contains the end of the "with Diagram:" block
+        if inside_diagram_block and line.strip() == "":
+            inside_diagram_block = False
+
+        # TODO: not sure if it handles all edge cases...
+        # Only include lines that are inside the "with Diagram:" block or not related to the diagram
+        if inside_diagram_block or not line.strip().startswith("diag."):
+            updated_lines.append(line)
+
+    # Join the updated lines to create the updated code
+    updated_code = "\n".join(updated_lines)
+
+    return updated_code, diagram_filename
+
+
+@app.route("/createDiagram", methods=["POST"])
+def create_diagram():
+    """
+    Create a diagram
+    """
+    # Parse JSON input
+    logging.info("Creating a diagram")
+    data_raw = request.data
+    data = json.loads(data_raw.decode("utf-8"))
+    logging.info(data)
+    code = data["code"]
+
+    # Clean up hallucinated code
+    code, file_name = process_code(code)
+
+    try:
+        # Code to run
+        save_and_run_python_code(code)
+
+        key_name = f"chataws_resources/diagrams/{file_name}"
+        # Upload file to S3
+        with open(file_name, "rb") as file_content:
+            s3.put_object(
+                Bucket=S3_BUCKET,
+                Key=key_name,
+                Body=file_content,
+                ACL="public-read",
+                ContentType="image/x-png",
+            )
+        logging.info(f"File uploaded to {S3_BUCKET}/{key_name}")
+        return (
+            jsonify(
+                message=f"Diagram located at https://{S3_BUCKET}.s3.amazonaws.com/{key_name}"
+            ),
+            200,
+        )
+    except ClientError as e:
+        logging.info(e)
+        return jsonify(error=str(e)), e.response["Error"]["Code"]
+
+
+@app.route("/answerQuery", methods=["POST"])
+def answer_query():
+    """
+    Answer User's Query
+    """
+    # Parse JSON input
+    logging.info("Getting Context")
+    data_raw = request.data
+    data = json.loads(data_raw.decode("utf-8"))
+    logging.info(data)
+    query = data["query"]
+
+    try:
+        context, docs = ai_utils.construct_prompt(query)
+
+        return (
+            jsonify(message=f"Context:{context} \n Documents:\n{docs}"),
+            200,
+        )
+    except ClientError as e:
+        logging.info(e)
         return jsonify(error=str(e)), e.response["Error"]["Code"]
 
 

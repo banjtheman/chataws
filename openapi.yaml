@@ -72,7 +72,50 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CreateLambdaFunctionResponse"
-
+  /createDiagram:
+    post:
+      operationId: createDiagram
+      summary: Create an AWS Architecture Diagram.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+              required:
+                - code
+      responses:
+        "200":
+          description: Diagram created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateDiagramResponse"
+  /answerQuery:
+    post:
+      operationId: answerQuery
+      summary:  Answer user's query about AWS by referencing the Well Architected Framework and providing links to follow up material.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+              required:
+                - query
+      responses:
+        "200":
+          description: Diagram created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateDiagramResponse"
   /.well-known/ai-plugin.json:
     get:
       operationId: serveManifest
@@ -98,3 +141,15 @@ components:
         Configuration:
           type: object
           description: The details of the created Lambda function.
+    CreateDiagramResponse:
+      type: object
+      properties:
+        Configuration:
+          type: object
+          description: A message indicating that the diagram was created.
+    answerQueryResponse:
+      type: object
+      properties:
+        Configuration:
+          type: object
+          description: Context to answer user query, and supporting documents
