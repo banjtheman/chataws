@@ -45,6 +45,7 @@ You will need to setup AWS access keys that can do the following.
  * Put Object to the designated bucket
 * Create Lambda Functions
 * Create Lambda Function URL
+
 In addition, you must create a Lambda Role for the app to use, as well as provide an S3 bucket that allows public objects.
 
 ## Start Docker
