@@ -68,7 +68,9 @@ def upload_to_s3():
         )
         logging.info(f"File uploaded to {S3_BUCKET}/{key_name}")
         return (
-            jsonify(message=f"File located here https://{S3_BUCKET}.s3.amazonaws.com/{key_name}""),
+            jsonify(
+                message=f"File located here https://{S3_BUCKET}.s3.amazonaws.com/{key_name}"
+            ),
             200,
         )
     except ClientError as e:
