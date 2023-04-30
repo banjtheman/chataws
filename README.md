@@ -39,19 +39,26 @@ Build the Docker image:
 docker build . -t aws_chatgpt_plugin
 ```
 
-## Usage
+## Setup
+
+You will need to setup AWS access keys that can do the following.
+ * Put Object to the designated bucket
+* Create Lambda Functions
+* Create Lambda Function URL
+In addition, you must create a Lambda Role for the app to use, as well as provide an S3 bucket that allows public objects.
+
+## Start Docker
 
 Run the Docker container with the required environment variables:
 
-**Note:** You must create a Lambda Role for the app to use, as well as provide an S3 public that allows public objects.
-
 ```bash
-docker run -p 5000:5000 \
+docker run -p PORT:PORT \
 -e AWS_DEFAULT_REGION=<your_aws_region> \
 -e AWS_ACCESS_KEY_ID=<your_aws_access_key> \
 -e AWS_SECRET_ACCESS_KEY=<your_aws_secret_key> \
 -e LAMBDA_ROLE=<your_lambda_role_arn> \
 -e S3_BUCKET=<your_s3_bucket_name> \
+-e PORT=PORT \
 aws_chatgpt_plugin
 ```
 
