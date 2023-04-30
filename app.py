@@ -29,7 +29,7 @@ logger.warning("Log Level set to: {}".format(logLevel))
 
 # Initialize Flask app and CORS
 app = Flask(__name__)
-PORT = 5000
+PORT = os.environ["PORT"]
 CORS(app, origins=[f"http://localhost:{PORT}", "https://chat.openai.com"])
 
 # Initialize AWS clients
@@ -68,7 +68,7 @@ def upload_to_s3():
         )
         logging.info(f"File uploaded to {S3_BUCKET}/{key_name}")
         return (
-            jsonify(message=f"File {key_name} uploaded to S3 bucket {S3_BUCKET}"),
+            jsonify(message=f"File located here https://{S3_BUCKET}.s3.amazonaws.com/{key_name}""),
             200,
         )
     except ClientError as e:
