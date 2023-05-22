@@ -4,8 +4,9 @@
    Create AWS Lambda functions and websites in Amazon S3 using ChatGPT.
 </p>
 
-https://user-images.githubusercontent.com/696254/232276725-b497f0a5-1be6-48c4-a156-5ef0bb6d3973.mp4
-
+<!-- https://user-images.githubusercontent.com/696254/232276725-b497f0a5-1be6-48c4-a156-5ef0bb6d3973.mp4
+ -->
+https://github.com/banjtheman/chataws/assets/696254/f8c2924d-531a-41a4-a03b-e9c2556c60d1
 
 ## Features
 
